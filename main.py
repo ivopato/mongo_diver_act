@@ -198,14 +198,16 @@ def actualizar():
     rol = input("Nuevo rol: ")
 
     # TODO: Buscar por nombre y actualizar el rol
-    
+    res = coll.update_one({'nombre': nombre},{'$set': {'rol': rol}})
+    print(f'Actualizado: {res.modified_count}')
 
 # -------------------------------------------------
 # 12. ACTIVAR USUARIOS INACTIVOS
 # -------------------------------------------------
 def actualizar_varios():
-
     # TODO: actualizar donde activo sea False y cambiar a True
+    res = coll.update_many({'activo': False}, {'$set': {True}})
+    print(f'Usuarios actualizados: {res.modified_count}')
 
 
 
@@ -214,10 +216,14 @@ def actualizar_varios():
 # -------------------------------------------------
 def eliminar():
 
-     nombre = input("Nombre a eliminar: ")
+    nombre = input("Nombre a eliminar: ")
 
     # TODO: Eliminar usuario por nombre
-
+    res = coll.delete_one({'nombre': nombre})
+    if res.deleted_count == 1:
+        print('\nEliminado correctamente.')
+    else:
+        print('\nNo se eliminó ningún usuario.')
 
 
 # -------------------------------------------------
@@ -228,6 +234,7 @@ def eliminar_varios():
     edad = int(input("Eliminar usuarios menores a edad: "))
 
     # TODO: Eliminar usuario menores a edad especifica
+    res = coll.delete_many({'edad': {'$lt': edad}})
 
 # -------------------------------------------------
 # 15. LISTAR COLECCIONES
